@@ -11,6 +11,7 @@ class PullResquest extends Model
         'github_number',
         'title',
         'state',
+        'page_number',
         'github_created_at',
         'github_updated_at',
         'github_closed_at',
