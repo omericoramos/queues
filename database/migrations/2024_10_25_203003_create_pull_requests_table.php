@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pull_resquests', function (Blueprint $table) {
+        Schema::create('pull_requests', function (Blueprint $table) {
             $table->id();
             $table->string('github_id');
             $table->string('github_number');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pull_resquests');
+        Schema::dropIfExists('pull_requests');
     }
 };
