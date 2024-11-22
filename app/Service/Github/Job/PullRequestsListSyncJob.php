@@ -2,6 +2,7 @@
 
 namespace App\Service\Github\Job;
 
+use App\Service\Github\ClientService;
 use App\Service\Github\PullRequestService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -15,13 +16,13 @@ class PullRequestsListSyncJob implements ShouldQueue
      */
     public function __construct(
         public string $repositoryFullName = "",
-        public ?int $page = 1
+        public ?int $page = 1,
     ) {
         //
     }
-    public function handle(): void
+    public function handle(PullRequestService $pullRequestService): void
     {
-        $pullRequests = (new PullRequestService())
+        $pullRequests = $pullRequestService
             ->getListPullRequests($this->repositoryFullName, $this->page);
 
         if (empty($pullRequests)) {
@@ -38,7 +39,7 @@ class PullRequestsListSyncJob implements ShouldQueue
         }
 
         $nextPage = $this->page + 1;
-        
+
         echo "Estamos na listagem: {$this->page}\n";
         PullRequestsListSyncJob::dispatch($this->repositoryFullName, $nextPage);
     }

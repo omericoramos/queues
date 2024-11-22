@@ -28,9 +28,9 @@ class PullRequestSyncJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(PullRequestService $pullRequestService): void
     {
-        $pullRequestData = (new PullRequestService())
+        $pullRequestData = $pullRequestService
             ->getPullRequest($this->repositoryFullName, $this->pullRequestNumber);
 
         if (empty($pullRequestData)) {
