@@ -51,5 +51,10 @@ class PullRequestSyncJob implements ShouldQueue
                 'github_merged_at' => Carbon::parse($pullRequestData['merged_at'])->format('Y-m-d H:i:s'),
             ]
         );
+
+        PullRequestReviewersRequestedSyncJob::dispatch(
+            $this->repositoryFullName,
+            $this->pullRequestNumber
+        );
     }
 }
