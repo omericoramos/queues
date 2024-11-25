@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pull_resquests', function (Blueprint $table) {
+        Schema::table('pull_requests', function (Blueprint $table) {
             $table->integer('page_number');
         });
     }
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pull_resquests', function (Blueprint $table) {
-            //
+        Schema::table('pull_requests', function (Blueprint $table) {
+            $table->dropColumn('page_number');
         });
     }
 };
