@@ -28,9 +28,9 @@ class PullRequestsListSyncJob implements ShouldQueue
         if (empty($pullRequests)) {
             return;
         }
-
+        
         foreach ($pullRequests as $pullRequest) {
-
+            
             PullRequestSyncJob::dispatch(
                 $this->repositoryFullName,
                 $this->page,

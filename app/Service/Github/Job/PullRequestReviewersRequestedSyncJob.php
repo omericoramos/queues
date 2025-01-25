@@ -14,6 +14,7 @@ class PullRequestReviewersRequestedSyncJob implements ShouldQueue
     use Queueable;
 
     public function __construct(
+        public PullRequest $pullRequest,
         public string $repositoryFullName,
         public int $pullRequestNumber
     ) {}
@@ -26,14 +27,12 @@ class PullRequestReviewersRequestedSyncJob implements ShouldQueue
         );
 
         foreach ($response['users'] as $collaborator) {
-            $collaborator = Collaborator::updateOrCreate(
-                ['login' => $collaborator['login']],
-                ['api_id' => $collaborator['id']]
+
+            PullRequestReviewerRequestedStoreJob::dispatch(
+                $this->pullRequest,
+                $collaborator
             );
-
-            $pr = PullRequest::where('github_number', $this->pullRequestNumber)->first();
-
-            $collaborator->pullRequests()->attach($pr);
+            
         }
     }
 }

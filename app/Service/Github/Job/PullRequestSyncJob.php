@@ -20,7 +20,7 @@ class PullRequestSyncJob implements ShouldQueue
     public function __construct(
         protected string $repositoryFullName,
         protected int $page,
-        protected int $pullRequestNumber
+        protected string $pullRequestNumber
     ) {
         //
     }
@@ -37,7 +37,7 @@ class PullRequestSyncJob implements ShouldQueue
             return;
         }
 
-        PullRequest::updateOrCreate(
+        $pullRequest = PullRequest::firstOrCreate(
             ['github_id' => $pullRequestData['id']],
             [
                 'github_number' => $pullRequestData['number'],
@@ -53,6 +53,7 @@ class PullRequestSyncJob implements ShouldQueue
         );
 
         PullRequestReviewersRequestedSyncJob::dispatch(
+            $pullRequest,
             $this->repositoryFullName,
             $this->pullRequestNumber
         );
